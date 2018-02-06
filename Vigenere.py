@@ -10,22 +10,23 @@ def encode(text=None, key=None):
     key_list = []
 
     for val in key:
-        if val != ' ':
+        if val.isalpha():
             key_list += val
 
-    for letter in text:
-        key_val = key_val % len(key) + 1
-        if letter.isupper():
-            code = ord(letter) + ord(key_list[key_val - 1].upper()) - upper
+    for character in text:
+        if character.isupper():
+            key_val = key_val % len(key_list) + 1
+            code = ord(character) + ord(key_list[key_val - 1].upper()) - upper
             if code >= upper + 26:
                 code -= 26
-            letter = chr(code)
-        elif letter.islower():
-            code = ord(letter) + ord(key_list[key_val - 1].lower()) - lower
+            character = chr(code)
+        elif character.islower():
+            key_val = key_val % len(key_list) + 1
+            code = ord(character) + ord(key_list[key_val - 1].lower()) - lower
             if code >= lower + 26:
                 code -= 26
-            letter = chr(code)
-        message += letter
+            character = chr(code)
+        message += character
     print('Encoded message: ' + message)
 
 
@@ -35,19 +36,19 @@ def encode_no_space(text=None, key=None):
     key_list = []
 
     for val in key:
-        if val != ' ':
+        if val.isalpha():
             key_list += val
 
-    for letter in text:
-        if letter.isalpha():
-            key_val = key_val % len(key) + 1
-            code = ord(letter) + ord(key_list[key_val - 1].lower()) - lower
+    for character in text:
+        if character.isalpha():
+            key_val = key_val % len(key_list) + 1
+            code = ord(character) + ord(key_list[key_val - 1].lower()) - lower
             if code >= lower + 26:
                 code -= 26
-            letter = chr(code)
-            message += letter
-        elif letter.isdigit():
-            message += letter
+            character = chr(code)
+            message += character
+        elif character.isdigit():
+            message += character
     print('Encoded message: ' + message)
 
 
@@ -57,46 +58,95 @@ def decode(text=None, key=None):
     key_list = []
 
     for val in key:
-        if val != ' ':
+        if val.isalpha():
             key_list += val
 
-    for letter in text:
-        key_val = key_val % len(key) + 1
-        if letter.isupper():
-            code = ord(letter) - ord(key_list[key_val - 1].upper()) + upper
+    for character in text:
+        if character.isupper():
+            key_val = key_val % len(key_list) + 1
+            code = ord(character) - ord(key_list[key_val - 1].upper()) + upper
             if code < upper:
                 code += 26
-            letter = chr(code)
-        elif letter.islower():
-            code = ord(letter) - ord(key_list[key_val - 1].lower()) + lower
+            character = chr(code)
+        elif character.islower():
+            key_val = key_val % len(key_list) + 1
+            code = ord(character) - ord(key_list[key_val - 1].lower()) + lower
             if code < lower:
                 code += 26
-            letter = chr(code)
-        message += letter
+            character = chr(code)
+        message += character
     print('Decoded message: ' + message)
+
+
+def brute_force(text=None):
+    decoded = False
+    while decoded == False:
+        for i in range(26):
+            key_list = chr(i + 97)
+            message = ''
+            key_val = 0
+            for character in text:
+                if character.isupper():
+                    key_val = key_val % len(key_list) + 1
+                    code = ord(character) - ord(key_list[key_val - 1].upper()) + upper
+                    if code < upper:
+                        code += 26
+                    character = chr(code)
+                elif character.islower():
+                    key_val = key_val % len(key_list) + 1
+                    code = ord(character) - ord(key_list[key_val - 1].lower()) + lower
+                    if code < lower:
+                        code += 26
+                    character = chr(code)
+                message += character
+            print(message)
+        decoded = True
+
+
+def dictionary_attack(text=None, loc=None):
+    pass
+
 
 while True:
     option = 0
 
-    print("\nVigenere Encoder/Decoder\n[1] Decode\n[2] Encode (Default)\n[3] Encode (Alnum with no white space)\n[8] Debug\n[9] Exit")
+    print('\nVigenere Encoder/Decoder\n[1] Encode\n[2] Decode\n[3] Encode (Alpha-numeric With No White Space)\n'
+          '[4] Dictionary Attack (In Development) \n[5] Brute Force Attack (In Development)\n[8] Debug\n[9] Exit\n'
+          '[0] More Information (Unwritten)')
     try:
         option = int(input(">>"))
     except ValueError:
         pass
 
     if option == 1:
-        text = input("Input the text you want to decode\n>>")
-        key = input("Input the key you were given\n>>")
-        decode(text, key)
-    elif option == 2:
         text = input('Input the text you want to encode\n>>')
-        key = input('Input your secret key\n>>')
+        key = input('Create a secret key to encode the message with.\n>>').lower()
         encode(text, key)
+    elif option == 2:
+        text = input('Input the text you want to decode\n>>')
+        key = input('Input the key you were given\n>>').lower()
+        decode(text, key)
     elif option == 3:
         text = input('Input the text you want to encode\n>>').lower()
-        key = input('Input your secret key\n>>').lower()
+        key = input('Create a secret key to encode the message with.\n>>').lower()
         encode_no_space(text, key)
+    elif option == 4:
+        print("Sorry, this option doesn't exist yet.")
+        """
+        text = input('Input the text you want to run a dictionary attack on\n>>')
+        loc = input('Please input the full path to the dictionary file location\n>>')
+        dictionary_attack(text, loc)
+        """
+    elif option == 5:
+        print("---------------------------------------------------")
+        print("This option does not work yet, but is being tested.")
+        print("---------------------------------------------------")
+        print()
+        text = input('Input the text you want to run a bruteforce attack on\n>>')
+        brute_force(text)
     elif option == 8:
-        pdb.run("debug")
+        pdb.run('debug')
     elif option == 9:
         exit()
+    elif option == 0:
+        print("Sorry, I don't have more info yet.")
