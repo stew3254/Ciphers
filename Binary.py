@@ -1,44 +1,30 @@
 import pdb
 
 
-def encode_with_space(message=None):
+def encode(message=None, space=False):
     binary_message = ''
     if message is None:
         message = input('Input the message you want to convert to binary: ')
     for character in message:
         binary = bin(ord(character))[2:]
-        binary_message += ' %08d' % int(binary)
+        if space is True:
+            binary_message += ' %08d' % int(binary)
+        else:
+            binary_message += '%08d' % int(binary)
     print('>>' + binary_message.strip())
 
 
-def encode_with_formatting_no_space(message=None):
+def encode_with_formatting(message=None, space=False):
     binary_message = ''
     if message is None:
         message = input('Input the message you want to convert to binary: ')
     for character in message:
         binary = bin(ord(character))[2:]
-        binary_message += '0b%08d' % int(binary)
+        if space is True:
+            binary_message += ' 0b%08d' % int(binary)
+        else:
+            binary_message += '0b%08d' % int(binary)
     print('>>' + binary_message.strip())
-
-
-def encode_with_formatting_with_space(message=None):
-    binary_message = ''
-    if message is None:
-        message = input('Input the message you want to convert to binary: ')
-    for character in message:
-        binary = bin(ord(character))[2:]
-        binary_message += ' 0b%08d' % int(binary)
-    print('>>' + binary_message.strip())
-
-
-def encode_no_space(message=None):
-    binary_message = ''
-    if message is None:
-        message = input('Input the message you want to convert to binary: ')
-    for character in message:
-        binary = bin(ord(character))[2:]
-        binary_message += '%08d' % int(binary)
-    print('>>' + binary_message)
 
 
 def decode(binary_message=None):
@@ -86,7 +72,7 @@ while option != 4:
         print('You must choose one of the numbers in the list')
     if option == 1:
         print()
-        encode_no_space()
+        encode()
         print()
     elif option == 2:
         print()

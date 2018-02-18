@@ -1,7 +1,7 @@
 import pdb
 
 
-def encode_no_space(message=None):
+def encode(message=None, space=False):
     hexadecimal_message = ''
     if message is None:
         message = input('Input the message you want to convert to hexadecimal: ')
@@ -9,45 +9,26 @@ def encode_no_space(message=None):
     for character in message:
         hexadecimal = str(hex(ord(character))[2:])
         try:
-            hexadecimal_message += '%02d' % int(hexadecimal)
+            if space is True:
+                hexadecimal_message += ' %02d' % int(hexadecimal)
+            else:
+                hexadecimal_message += '%02d' % int(hexadecimal)
         except:
             hexadecimal_message += hexadecimal
     print('>>' + hexadecimal_message.strip())
 
 
-def encode_with_space(message=None):
+def encode_with_formatting(message=None, space=False):
     hexadecimal_message = ''
     if message is None:
         message = input('Input the message you want to convert to hexadecimal: ')
         print(message)
     for character in message:
-        hexadecimal = str(hex(ord(character))[2:])
-        try:
-            hexadecimal_message += ' %02d' % int(hexadecimal)
-        except:
+        hexadecimal = hex(ord(character))
+        if space is True:
             hexadecimal_message += ' ' + hexadecimal
-    print('>>' + hexadecimal_message.strip())
-
-
-def encode_with_formatting_no_space(message=None):
-    hexadecimal_message = ''
-    if message is None:
-        message = input('Input the message you want to convert to hexadecimal: ')
-        print(message)
-    for character in message:
-        hexadecimal = hex(ord(character))
-        hexadecimal_message += hexadecimal
-    print('>>' + hexadecimal_message.strip())
-
-
-def encode_with_formatting_with_space(message=None):
-    hexadecimal_message = ''
-    if message is None:
-        message = input('Input the message you want to convert to hexadecimal: ')
-        print(message)
-    for character in message:
-        hexadecimal = hex(ord(character))
-        hexadecimal_message += ' ' + hexadecimal
+        else:
+            hexadecimal_message += hexadecimal
     print('>>' + hexadecimal_message.strip())
 
 
@@ -96,7 +77,7 @@ while option != 4:
         print('You must choose one of the numbers in the list')
     if option == 1:
         print()
-        encode_no_space()
+        encode()
         print()
     elif option == 2:
         print()
