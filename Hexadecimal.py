@@ -63,10 +63,11 @@ def decode(hexadecimal_message=None):
             num = i*2
             for x in range(2):
                 character += characters[num]
-                num +=1
+                num += 1
             character = chr(int(character, 16))
             message += character
     print('>>' + message.strip())
+
 
 option = 0
 
